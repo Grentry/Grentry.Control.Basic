@@ -4,14 +4,11 @@ COPY ./src/Frontend/ .
 RUN npm install -g @angular/cli
 RUN npm install
 RUN ng build --prod
-RUN ls
-RUN ls dist
-RUN ls dist/GrentryControlBasic
 
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 as build-dotnet
 WORKDIR /usr/app
-COPY --from=build-spa /usr/app/dist/GrentryControlBasic ./publish/wwwroot
+COPY --from=build-spa /usr/app/dist/grentryControlBasic ./publish/wwwroot
 RUN dotnet publish --configuration Release -r linux-arm --output publish/
 
 
