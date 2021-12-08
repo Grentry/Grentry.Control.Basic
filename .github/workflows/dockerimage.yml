@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      env:
+        DOCKER_TAG_PREFIX: main
+      run: |
+        docker login -u ladartha -p ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+        docker build . --file Dockerfile --tag ladartha/grentry-control-basic:$DOCKER_TAG_PREFIX-$GITHUB_RUN_NUMBER --tag ladartha/grentry-control-basic:latest
+        docker push ladartha/grentry-control-basic:$DOCKER_TAG_PREFIX-$GITHUB_RUN_NUMBER
+        docker push ladartha/grentry-control-basic:latest
