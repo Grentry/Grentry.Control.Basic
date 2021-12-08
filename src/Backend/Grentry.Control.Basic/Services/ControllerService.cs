@@ -1,6 +1,7 @@
 ﻿using Grentry.Control.Basic.Models;
 using Grentry.Control.Basic.Services.Interfaces;
 using Grentry.SDK;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,24 +16,28 @@ namespace Grentry.Control.Basic.Services
         private readonly ILogger<ControllerService> logger;
         private readonly IValidationService _validationService;
         private readonly IWebsiteService _websiteService;
+        private readonly IConfiguration _configuration;
         GrentryClient grentryClient;
 
         public ControllerService(
             ILogger<ControllerService> logger,
             IValidationService validationService,
-            IWebsiteService websiteService)
+            IWebsiteService websiteService,
+            IConfiguration configuration)
         {
             this.logger = logger;
             this._validationService = validationService;
             this._websiteService = websiteService;
+            this._configuration = configuration;
             this._websiteService.SetWebsiteModelAsync(GetStartWebsiteDto());
         }
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
 #if DEBUG
             this.grentryClient = new GrentryClient("http://192.168.0.20:5000/");
+
 #else
-            this.grentryClient = new GrentryClient("http://locahost:5000/");
+            this.grentryClient = new GrentryClient(this._configuration["Control:BaseUrl"]);
 #endif
             this.grentryClient.BarcodeReceived += async (o, data) => await GrentryClient_BarcodeReceived(o, data);
             this.grentryClient.CardReceived += async (o, data) => await GrentryClient_CardReceived(o, data);
