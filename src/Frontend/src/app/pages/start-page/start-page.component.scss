@@ -1,0 +1,13 @@
+.start-container
+{
+    height: 480px;
+    width: 800px;
+    position: relative;
+
+    .item
+    {
+        bottom: 100px;
+        left: 100px;
+        position: absolute;
+    }
+}

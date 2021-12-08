@@ -1,0 +1,3 @@
+<div class="start-container" [ngStyle]="backgroundColorStyle">
+    <div *ngFor="let item of textItems" [ngStyle]="item.style ?? ''">{{ item.text }}</div>
+</div>
