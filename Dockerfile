@@ -4,6 +4,9 @@ COPY ./src/Frontend/ .
 RUN npm install -g @angular/cli
 RUN npm install
 RUN ng build --prod
+RUN ls
+RUN ls dist
+RUN ls dist/GrentryControlBasic
 
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 as build-dotnet
