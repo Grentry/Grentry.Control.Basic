@@ -9,6 +9,7 @@ RUN ng build --prod
 FROM mcr.microsoft.com/dotnet/sdk:5.0 as build-dotnet
 WORKDIR /usr/app
 COPY --from=build-spa /usr/app/dist/grentryControlBasic ./publish/wwwroot
+COPY ./src/Backend/ .
 RUN dotnet publish --configuration Release -r linux-arm --output publish/
 
 
